@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button } from 'semantic-ui-react'
+import { Form, Input, Button, Icon } from 'semantic-ui-react'
 
 
 
@@ -8,12 +8,6 @@ const FormInput = () => {
     const [userPassword, setUserPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState(null);
     const [isValidForm, setIsValidForm] = useState(false);
-
-    /*    const upperCases = `ABCDEFGHIJKLMNOPQRSTUVWXYZ`;
-       const lowerCases = upperCases.toLowerCase();
-       const numbers = `1234567890`;
-       const specialChars = ` !"#%^&'()*+,-/;<=>?@[]\\_\`{}|~`; */
-
 
 
     function mailHandler(e) {
@@ -27,8 +21,9 @@ const FormInput = () => {
         e.preventDefault();
         setUserEmail("")
         setUserPassword("")
+        validation()
     }
-    console.log(errorMessage);
+
 
     function validation() {
         let emptyObj = "";
@@ -48,16 +43,14 @@ const FormInput = () => {
     }
     return (
         <div className="form-wrapper">
-            <form>
-                <Form.Input
-                    id='form-input-control-error-email'
-                    control={Input}
-                    placeholder='joe@schmoe.com'
-                    value={userEmail}
-                    onChange={mailHandler}
-                />
+            <form className="form-div">
 
-                <Form.Input type='password' value={userPassword} onChange={passwordHandler} />
+                <Input iconPosition='left' placeholder='Email' value={userEmail}
+                    onChange={mailHandler}>
+                    <Icon name='at' />
+                    <input />
+                </Input>
+                <Input type='password' value={userPassword} onChange={passwordHandler} />
                 {!isValidForm ? errorMessage : null}
                 <Button onClick={clickHandler}>Click Here</Button>
             </form>
