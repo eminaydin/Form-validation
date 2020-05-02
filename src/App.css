@@ -1,7 +1,6 @@
 .App {
-  width: 100vh;
-}
-
-.form-wrapper {
-  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
