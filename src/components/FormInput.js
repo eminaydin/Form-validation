@@ -25,7 +25,6 @@ const FormInput = () => {
 
     function clickHandler(e) {
         e.preventDefault();
-        validation()
         setUserEmail("")
         setUserPassword("")
     }
@@ -33,16 +32,16 @@ const FormInput = () => {
 
     function validation() {
         let emptyObj = "";
-        let upperCases = `ABCDEFGHIJKLMNOPQRSTUVWXYZ`;
-        let lowerCases = upperCases.toLowerCase();
-        let numbers = `1234567890`;
-        let specialChars = ` !"#%^&'()*+,-/;<=>?@[]\\_\`{}|~`;
+        let regexChars = /\W|_/g;
 
-        if (userPassword.length <= 8) emptyObj = "Password should consist at least 8 characters."
-        if (userPassword.includes(userEmail)) emptyObj = "Password can not contain the username.";
+        if (!userPassword.match(new RegExp("[A-Z]"))) emptyObj = " password should contain at least 1 uppercase";
+        if (!userPassword.match(new RegExp(regexChars))) emptyObj = " password should contain at least 1 specialChar";
+        if (!userPassword.match(new RegExp(/[0-9]/))) emptyObj = " password should contain at least 1 number";
+        if (!userPassword.length < 8) emptyObj = "Password should contain at least 8 characters.";
+        if (userPassword.includes(userEmail.split("@")[0])) emptyObj = "Password can not contain username.";
         if (!userPassword) emptyObj = "No password provided.";
         if (!userEmail.includes("@")) emptyObj = "Please type valid mail adress";
-        if (!userEmail) emptyObj = "No email provided"
+        if (!userEmail) emptyObj = "No email provided";
 
         setIsValidForm(!emptyObj && true)
         setErrorMessage(emptyObj)
