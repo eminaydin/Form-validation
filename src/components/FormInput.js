@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Input, Button, Icon } from 'semantic-ui-react'
+import { Input, Button, Icon, Grid, Header, Form, Segment, Message } from 'semantic-ui-react'
 import Success from './Success';
 
 
 
 
-const FormInput = (props) => {
+const FormInput = () => {
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState(null);
-    const [isValidForm, setIsValidForm] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(false);
+    const [isValidForm, setIsValidForm] = useState("");
     const [passwordIsHidden, setPasswordIsHidden] = useState(true);
+    const [hasAnyError, setHasAnyError] = useState(false);
 
 
     function mailHandler(e) {
@@ -34,19 +35,18 @@ const FormInput = (props) => {
         let emptyObj = "";
         let regexChars = /\W|_/g;
 
-        if (!userPassword.match(new RegExp("[A-Z]"))) emptyObj = " password should contain at least 1 uppercase";
-        if (!userPassword.match(new RegExp(regexChars))) emptyObj = " password should contain at least 1 specialChar";
-        if (!userPassword.match(new RegExp(/[0-9]/))) emptyObj = " password should contain at least 1 number";
-        if (userPassword.length < 8) emptyObj = "Password should contain at least 8 characters.";
-        if (userPassword.includes(userEmail.split("@")[0])) emptyObj = "Password can not contain username.";
-        if (!userPassword) emptyObj = "No password provided.";
-        if (!userEmail.includes("@")) emptyObj = "Please type valid mail adress";
-        if (!userEmail) emptyObj = "No email provided";
+        if (!userPassword.match(new RegExp("[A-Z]"))) emptyObj = " Password must contain at least 1 uppercase letter.";
+        if (!userPassword.match(new RegExp(regexChars))) emptyObj = " Password must contain at least 1 special character.";
+        if (!userPassword.match(new RegExp(/[0-9]/))) emptyObj = " Password must contain at least 1 number.";
+        if (userPassword.length < 8) emptyObj = "Password must be least 8 characters long.";
+        if (userPassword.includes(userEmail.split("@")[0])) emptyObj = "Password can not contain your e-mail name.";
+        if (!userPassword) emptyObj = "Please type your password.";
+        if (!userEmail.includes("@")) emptyObj = "Please type in valid e-mail.";
+        if (!userEmail) emptyObj = "Please type your e-mail.";
 
+        setHasAnyError(emptyObj && true)
         setIsValidForm(!emptyObj && true)
         setErrorMessage(emptyObj)
-
-
 
     }
 
@@ -54,24 +54,31 @@ const FormInput = (props) => {
         setPasswordIsHidden(!passwordIsHidden)
     }
     return (
-        <div className="form-wrapper">
-            <form className="form-div">
+        <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+            <Grid.Column style={{ maxWidth: 450 }}>
+                <Header as='h2' color='teal' textAlign='center'>
+                    Login to your account
+      </Header>
+                <Form size='large'>
+                    <Segment raised>
 
-                <Input iconPosition='left' placeholder='Email' value={userEmail}
-                    onChange={mailHandler}>
-                    <Icon name='at' />
-                    <input />
-                </Input>
-                <Input type={passwordIsHidden ? "password" : "text"} iconPosition="left" placeholder='Password' value={userPassword} onChange={passwordHandler}>
-                    <Icon name='eye' link="true" onClick={showPassword} />
-                    <input />
-                </Input>
-                {!isValidForm ? errorMessage : null}
-                <Button onChange={clickHandler}>Click Here</Button>
-            </form>
-            {isValidForm &&
-                <Success />}
-        </div>
+                        <Form.Input iconPosition='left' placeholder='Email' value={userEmail}
+                            onChange={mailHandler}>
+                            <Icon name='at' />
+                            <input />
+                        </Form.Input>
+                        <Form.Input type={passwordIsHidden ? "password" : "text"} iconPosition="left" placeholder='Password' value={userPassword} onChange={passwordHandler}>
+                            <Icon name='eye' link="true" onClick={showPassword} />
+                            <input />
+                        </Form.Input>
+                        {hasAnyError ? <Message>{errorMessage} </Message> : null}
+                        <Button color="teal" onClick={clickHandler}>Click Here</Button>
+                    </Segment>
+                </Form>
+                {isValidForm &&
+                    <Success />}
+            </Grid.Column>
+        </Grid>
     );
 };
 

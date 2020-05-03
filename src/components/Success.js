@@ -3,7 +3,7 @@ import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 
 const Success = () => {
     const [modalOpen, setModalOpen] = useState(true);
-    const handleClose = () => setModalOpen(false)
+    const handleClose = () => setModalOpen(false);
     return (
         <Modal
             open={modalOpen}
