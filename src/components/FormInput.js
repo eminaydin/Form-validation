@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Icon } from 'semantic-ui-react'
+import { Input, Button, Icon } from 'semantic-ui-react'
+import Success from './Success';
+
 
 
 
@@ -8,10 +10,12 @@ const FormInput = (props) => {
     const [userPassword, setUserPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState(null);
     const [isValidForm, setIsValidForm] = useState(false);
+    const [passwordIsHidden, setPasswordIsHidden] = useState(true);
 
 
     function mailHandler(e) {
         setUserEmail(e.target.value)
+
     }
     function passwordHandler(e) {
         setUserPassword(e.target.value)
@@ -41,9 +45,14 @@ const FormInput = (props) => {
 
         setIsValidForm(!emptyObj && true)
         setErrorMessage(emptyObj)
-        props.childValue(emptyObj)
+
+
+
     }
 
+    function showPassword() {
+        setPasswordIsHidden(!passwordIsHidden)
+    }
     return (
         <div className="form-wrapper">
             <form className="form-div">
@@ -53,11 +62,15 @@ const FormInput = (props) => {
                     <Icon name='at' />
                     <input />
                 </Input>
-                <Input type='password' value={userPassword} onChange={passwordHandler} />
+                <Input type={passwordIsHidden ? "password" : "text"} iconPosition="left" placeholder='Password' value={userPassword} onChange={passwordHandler}>
+                    <Icon name='eye' link="true" onClick={showPassword} />
+                    <input />
+                </Input>
                 {!isValidForm ? errorMessage : null}
-                <Button onClick={clickHandler}>Click Here</Button>
+                <Button onChange={clickHandler}>Click Here</Button>
             </form>
-
+            {isValidForm &&
+                <Success />}
         </div>
     );
 };
