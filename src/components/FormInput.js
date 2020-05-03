@@ -3,7 +3,7 @@ import { Form, Input, Button, Icon } from 'semantic-ui-react'
 
 
 
-const FormInput = () => {
+const FormInput = (props) => {
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState(null);
@@ -19,9 +19,10 @@ const FormInput = () => {
 
     function clickHandler(e) {
         e.preventDefault();
+        validation()
         setUserEmail("")
         setUserPassword("")
-        validation()
+
     }
 
 
@@ -32,7 +33,7 @@ const FormInput = () => {
         if (!userPassword.match(new RegExp("[A-Z]"))) emptyObj = " password should contain at least 1 uppercase";
         if (!userPassword.match(new RegExp(regexChars))) emptyObj = " password should contain at least 1 specialChar";
         if (!userPassword.match(new RegExp(/[0-9]/))) emptyObj = " password should contain at least 1 number";
-        if (!userPassword.length < 8) emptyObj = "Password should contain at least 8 characters.";
+        if (userPassword.length < 8) emptyObj = "Password should contain at least 8 characters.";
         if (userPassword.includes(userEmail.split("@")[0])) emptyObj = "Password can not contain username.";
         if (!userPassword) emptyObj = "No password provided.";
         if (!userEmail.includes("@")) emptyObj = "Please type valid mail adress";
@@ -40,7 +41,9 @@ const FormInput = () => {
 
         setIsValidForm(!emptyObj && true)
         setErrorMessage(emptyObj)
+        props.childValue(emptyObj)
     }
+
     return (
         <div className="form-wrapper">
             <form className="form-div">
