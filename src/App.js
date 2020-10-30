@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import './App.css';
-import FormInput from './components/FormInput';
-
-
+import React from "react";
+import "./App.css";
+import FormInput from "./components/FormInput";
 
 function App() {
   return (
